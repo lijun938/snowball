@@ -28,20 +28,25 @@
 
 ```
 snowball/
-├── dist/               # 可直接运行的发行包
-│   ├── snowball.exe    # 主程序
-│   ├── config.ini      # 配置文件（需按自己环境修改）
-│   ├── *.engine        # TensorRT 模型引擎文件
-│   └── *.dll           # 运行时依赖库
-├── src/                # 完整源码副本（可独立编译）
-│   ├── snowball.sln    # Visual Studio 解决方案
-│   ├── snowball.vcxproj
-│   ├── *.cpp / *.h     # C++ 源码
-│   └── config.ini      # 源码目录的配置副本
-├── AmtoOBS/            # 原始 Visual Studio 工程目录
+├── dist/                          # 可直接运行的发行包
+│   ├── snowball.exe               # 主程序
+│   ├── config.ini                 # 配置文件（需按自己环境修改）
+│   ├── *.engine                   # TensorRT 模型引擎文件
+│   ├── *.dll                      # 运行时依赖库
+│   └── gtuner_cv_workspace/       # TitanTwo GCV 工作区
+│       ├── amtoobs_titan_two_gcv.py    # GCV Python 脚本
+│       ├── amtoobs_titan_two_gcv.json  # GCV 配置
+│       ├── amtoobs_titan_two_gamepad.gpc  # GPC 手柄脚本（烧录到 TitanTwo）
+│       └── README.md              # GCV 工作区详细说明
+├── src/                           # 完整源码副本（可独立编译）
 │   ├── snowball.sln
-│   └── AmtoOBS/        # 工程源文件
-├── README.md           # 本文档
+│   ├── snowball.vcxproj
+│   ├── *.cpp / *.h
+│   └── config.ini
+├── AmtoOBS/                       # 原始 Visual Studio 工程目录
+│   ├── snowball.sln
+│   └── AmtoOBS/
+├── README.md                      # 本文档
 └── .gitignore
 ```
 
@@ -52,6 +57,7 @@ snowball/
 编辑 `dist/config.ini` 中的 `[capture]` 段：
 
 **天创 710N1 采集卡：**
+
 ```ini
 [capture]
 mode=qcap
@@ -59,22 +65,24 @@ device=SC0710 PCI
 ```
 
 **通用 USB 采集卡 / HDMI 采集卡：**
+
 ```ini
 [capture]
 mode=opencv
 opencv_index=0
-; opencv_index 从 0 开始，多设备时尝试 0、1、2...
 ```
 
-### 2. 配置 TitanTwo GCV 路径
+> `opencv_index` 从 0 开始，多设备时尝试 0、1、2...
 
-编辑 `dist/config.ini` 中的 `titan_two_gcv_path`，指向 Gtuner IV 工作区：
+### 2. 配置 TitanTwo + Gtuner IV
 
-```ini
-titan_two_gcv_path=D:\你的路径\gtuner_cv_workspace\titan_two_gcv.bin
-```
+详细步骤参见 `dist/gtuner_cv_workspace/README.md`，简要流程：
 
-同时确保 Gtuner IV 中 GCV Python 脚本的 JSON 配置文件 (`amtoobs_titan_two_gcv.json`) 中的 `packet_path` 与上面路径**完全一致**。
+1. 打开 Gtuner IV，将 `amtoobs_titan_two_gamepad.gpc` 烧录到 TitanTwo 槽位
+2. 在 Gtuner IV「计算机视觉」中，将工作区设为 `dist/gtuner_cv_workspace/` 文件夹
+3. 选择 `amtoobs_titan_two_gcv` 脚本并启动
+
+默认配置已将 GCV 通信路径指向 `dist/gtuner_cv_workspace/titan_two_gcv.bin`（相对路径），只要 Gtuner 工作区设对，无需额外修改路径。
 
 ### 3. 配置模型
 
@@ -87,7 +95,7 @@ engine=你的模型.engine
 
 ### 4. 启动
 
-1. 在 Gtuner IV 中启动 GCV Python 脚本
+1. 在 Gtuner IV 中启动 GCV 脚本
 2. 双击 `dist/snowball.exe`
 3. 在 UI 控制面板中调整参数
 
@@ -103,12 +111,9 @@ engine=你的模型.engine
 ### 编译步骤
 
 ```powershell
-# 使用 MSBuild 编译
 $msbuild = "C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\amd64\MSBuild.exe"
 & $msbuild "AmtoOBS\snowball.sln" /p:Configuration=Release /p:Platform=x64
 
-# 编译产物在 AmtoOBS\x64\Release\snowball.exe
-# 复制到 dist 目录
 Copy-Item "AmtoOBS\x64\Release\snowball.exe" -Destination "dist\" -Force
 ```
 
@@ -134,14 +139,6 @@ Copy-Item "AmtoOBS\AmtoOBS\config.ini" -Destination "src\" -Force
 | `aim_track_lost_frames` | 5 ~ 15 | 丢失多少帧后释放目标 |
 | `aim_lock_bonus` | 1.0 ~ 2.0 | 目标锁定粘性 |
 | `aim_prediction_ms` | 30 ~ 60 | 运动预测时间 (ms) |
-
-### TitanTwo + Gtuner IV 配置
-
-1. 将 TitanTwo 连接电脑
-2. 打开 Gtuner IV → Device Monitor
-3. 运行 GCV Python 脚本（`amtoobs_titan_two_gcv.py`）
-4. 确认 JSON 配置中 `packet_path` 与 `config.ini` 中 `titan_two_gcv_path` 一致
-5. 启动 `snowball.exe`
 
 ## License
 

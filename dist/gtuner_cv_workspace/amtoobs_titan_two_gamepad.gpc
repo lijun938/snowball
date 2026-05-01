@@ -1,0 +1,70 @@
+int32 hold_ms = 0;
+uint32 last_packet_time = 0;
+uint8 movement_flags = 0;
+int32 last_sequence = -1;
+fix32 aim_stick_x = 0.0;
+fix32 aim_stick_y = 0.0;
+
+#define AMTOOBS_PACKET_MAGIC 0xA0
+#define AMTOOBS_TRIGGER_ADS BUTTON_8
+#define AMTOOBS_TRIGGER_FIRE BUTTON_5
+#define AMTOOBS_TRIGGER_REQUIRE_BOTH FALSE
+#define AMTOOBS_TRIGGER_THRESHOLD 20.0
+
+init {
+    // Keep physical controller passthrough intact and only bias the aim stick.
+}
+
+main {
+    uint8 trigger_active = FALSE;
+    fix32 ads_value = 0.0;
+    fix32 fire_value = 0.0;
+
+    set_val(STICK_1_X, get_actual(STICK_1_X));
+    set_val(STICK_1_Y, get_actual(STICK_1_Y));
+
+    ads_value = get_actual(AMTOOBS_TRIGGER_ADS);
+    fire_value = get_actual(AMTOOBS_TRIGGER_FIRE);
+
+    if(AMTOOBS_TRIGGER_REQUIRE_BOTH) {
+        trigger_active =
+            ads_value >= AMTOOBS_TRIGGER_THRESHOLD &&
+            fire_value >= AMTOOBS_TRIGGER_THRESHOLD;
+    } else {
+        trigger_active =
+            ads_value >= AMTOOBS_TRIGGER_THRESHOLD ||
+            fire_value >= AMTOOBS_TRIGGER_THRESHOLD;
+    }
+
+    if(gcv_ready()) {
+        int32 packet_sequence = 0;
+        int32 packet_hold_ms = 0;
+        fix32 packet_stick_x = 0.0;
+        fix32 packet_stick_y = 0.0;
+        uint8 packet_flags = gcv_read(0);
+        gcv_read(9, &packet_sequence);
+        gcv_read(29, &packet_hold_ms);
+        gcv_read(33, &packet_stick_x);
+        gcv_read(37, &packet_stick_y);
+
+        if((packet_flags & 0xF0) == AMTOOBS_PACKET_MAGIC && packet_sequence != last_sequence) {
+            last_sequence = packet_sequence;
+            movement_flags = packet_flags;
+            hold_ms = packet_hold_ms;
+            aim_stick_x = packet_stick_x;
+            aim_stick_y = packet_stick_y;
+            last_packet_time = system_time();
+        }
+    }
+
+    if(trigger_active && (movement_flags & 0x02) && hold_ms > 0 && (system_time() - last_packet_time) <= hold_ms) {
+        set_val(STICK_1_X, clamp(get_actual(STICK_1_X) + aim_stick_x, -100.0, 100.0));
+        set_val(STICK_1_Y, clamp(get_actual(STICK_1_Y) + aim_stick_y, -100.0, 100.0));
+    } else if(trigger_active && (movement_flags & 0x02) && hold_ms == 0) {
+        set_val(STICK_1_X, clamp(get_actual(STICK_1_X) + aim_stick_x, -100.0, 100.0));
+        set_val(STICK_1_Y, clamp(get_actual(STICK_1_Y) + aim_stick_y, -100.0, 100.0));
+    } else {
+        set_val(STICK_1_X, get_actual(STICK_1_X));
+        set_val(STICK_1_Y, get_actual(STICK_1_Y));
+    }
+}

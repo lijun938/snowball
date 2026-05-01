@@ -73,7 +73,12 @@ dist/*.exe
 dist/*.dll
 dist/*.engine
 dist/*.bin
-dist/gtuner_cv_workspace/
+dist/gtuner_cv_workspace/*.bin
+dist/gtuner_cv_workspace/*.json
+!dist/gtuner_cv_workspace/amtoobs_titan_two_gcv.json
+dist/gtuner_cv_workspace/__pycache__/
+dist/gtuner_cv_workspace/smoke_logs/
+dist/gtuner_cv_workspace/smoke_logs_archive/
 
 # model files
 model-/

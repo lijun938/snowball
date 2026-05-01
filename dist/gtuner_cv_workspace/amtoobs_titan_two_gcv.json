@@ -1,0 +1,10 @@
+{
+    "packet_path": "titan_two_gcv.bin",
+    "stale_timeout_ms": 250,
+    "preview_width": 16,
+    "preview_height": 16,
+    "drop_input_frame": true,
+    "stats_path": "amtoobs_titan_two_gcv_stats.json",
+    "stats_interval_ms": 1000,
+    "read_attempts": 4
+}
