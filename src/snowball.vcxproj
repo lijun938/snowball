@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <QcapLegacyRoot>$(SolutionDir)天创\QCAP</QcapLegacyRoot>
+    <AmesdkLegacyRoot>$(SolutionDir)天创\AMESDK</AmesdkLegacyRoot>
+    <OfficialSdkRoot>$(SolutionDir)天创\SDK 1.1.0.203.3.2 ( 2024 第四季 最新版 )\RELEASES 1.1.0.203.3.2</OfficialSdkRoot>
+    <QcapOfficialRoot>$(OfficialSdkRoot)\QCAP</QcapOfficialRoot>
+    <AmesdkOfficialRoot>$(OfficialSdkRoot)\AMESDK</AmesdkOfficialRoot>
+    <QcapRuntimeRoot>$(QcapLegacyRoot)</QcapRuntimeRoot>
+    <AmesdkRuntimeRoot>$(AmesdkLegacyRoot)</AmesdkRuntimeRoot>
+    <QcapSdkRoot Condition="Exists('$(QcapOfficialRoot)\INC\QCAP.H')">$(QcapOfficialRoot)</QcapSdkRoot>
+    <QcapSdkRoot Condition="'$(QcapSdkRoot)'==''">$(QcapLegacyRoot)</QcapSdkRoot>
+    <AmesdkSdkRoot Condition="Exists('$(AmesdkOfficialRoot)\LIB\X64\VC.MINI\AMESDK.X64.DLL')">$(AmesdkOfficialRoot)</AmesdkSdkRoot>
+    <AmesdkSdkRoot Condition="'$(AmesdkSdkRoot)'==''">$(AmesdkLegacyRoot)</AmesdkSdkRoot>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AppConfig.cpp" />
+    <ClCompile Include="DetectorBackend.cpp" />
+    <ClCompile Include="LiveControlPanel.cpp" />
+    <ClCompile Include="MovementController.cpp" />
+    <ClCompile Include="QCAPCapture.cpp" />
+    <ClCompile Include="TensorRTDetector.cpp" />
+    <ClCompile Include="TensorRTGpuPreprocessBridge.cpp" />
+    <ClCompile Include="TensorRTYoloDetector.cpp" />
+    <ClCompile Include="..\third_party\external\TensorRT-YOLO\modules\trtyolo\core\buffer.cpp" />
+    <ClCompile Include="..\third_party\external\TensorRT-YOLO\modules\trtyolo\core\core.cpp" />
+    <ClCompile Include="..\third_party\external\TensorRT-YOLO\modules\trtyolo\infer\backend.cpp" />
+    <ClCompile Include="..\third_party\external\TensorRT-YOLO\modules\trtyolo\infer\trtyolo.cpp" />
+    <ClCompile Include="..\third_party\external\TensorRT-YOLO\modules\trtyolo\utils\common.cpp" />
+    <CudaCompile Include="TensorRTGpuPreprocess.cu" />
+    <CudaCompile Include="TensorRTGpuPostprocess.cu" />
+    <CudaCompile Include="..\third_party\external\TensorRT-YOLO\modules\trtyolo\infer\letterbox.cu" />
+    <ClCompile Include="main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AppConfig.h" />
+    <ClInclude Include="DetectionTypes.h" />
+    <ClInclude Include="DetectorBackend.h" />
+    <ClInclude Include="LiveControlPanel.h" />
+    <ClInclude Include="MovementController.h" />
+    <ClInclude Include="QCAPCapture.h" />
+    <ClInclude Include="TensorRTDetector.h" />
+    <ClInclude Include="TensorRTGpuPreprocess.h" />
+    <ClInclude Include="TensorRTGpuPostprocess.h" />
+    <ClInclude Include="TensorRTYoloDetector.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{18ed0b47-01d3-4f18-ba74-dafb6104dbf4}</ProjectGuid>
+    <RootNamespace>snowball</RootNamespace>
+    <TargetName>snowball</TargetName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\visual_studio_integration\CUDAVisualStudioIntegration\extras\visual_studio_integration\MSBuildExtensions\CUDA 13.1.props" Condition="Exists('$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\visual_studio_integration\CUDAVisualStudioIntegration\extras\visual_studio_integration\MSBuildExtensions\CUDA 13.1.props')" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\visual_studio_integration\CUDAVisualStudioIntegration\extras\visual_studio_integration\MSBuildExtensions\CUDA 13.1.props" Condition="Exists('$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\visual_studio_integration\CUDAVisualStudioIntegration\extras\visual_studio_integration\MSBuildExtensions\CUDA 13.1.props')" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <IntDir>$(Platform)\$(Configuration)\$(MSBuildProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <CudaPreferredToolArchitecture>x64</CudaPreferredToolArchitecture>
+    <CudaToolkitDir>$(MSBuildProjectDirectory)\..\third_party\sdk\cuda_13.1.1_extracted\cuda_nvcc\nvcc\</CudaToolkitDir>
+    <CudaToolkitBinDir>$(MSBuildProjectDirectory)\..\third_party\sdk\cuda_13.1.1_extracted\cuda_nvcc\nvcc\bin</CudaToolkitBinDir>
+    <CudaToolkitNvccPath>$(MSBuildProjectDirectory)\..\third_party\sdk\cuda_13.1.1_extracted\cuda_nvcc\nvcc\bin\nvcc.exe</CudaToolkitNvccPath>
+    <CudaToolkitIncludeDir>$(MSBuildProjectDirectory)\..\third_party\sdk\cuda_13.1.1_extracted\cuda_nvcc\nvcc\include</CudaToolkitIncludeDir>
+    <IncludePath>$(ProjectDir)opencv\x64\include;$(SolutionDir)third_party\external\TensorRT-YOLO\modules\trtyolo;$(SolutionDir)third_party\external\TensorRT-YOLO\modules\trtyolo\infer;$(QcapSdkRoot)\INC;$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cudart\cudart\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_crt\crt\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cccl\thrust\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cccl\thrust\include\cccl;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)opencv\x64\x64\vc17\staticlib;$(QcapSdkRoot)\LIB\X64\VC.MINI;$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\lib;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cudart\cudart\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <CudaPreferredToolArchitecture>x64</CudaPreferredToolArchitecture>
+    <CudaToolkitDir>$(MSBuildProjectDirectory)\..\third_party\sdk\cuda_13.1.1_extracted\cuda_nvcc\nvcc\</CudaToolkitDir>
+    <CudaToolkitBinDir>$(MSBuildProjectDirectory)\..\third_party\sdk\cuda_13.1.1_extracted\cuda_nvcc\nvcc\bin</CudaToolkitBinDir>
+    <CudaToolkitNvccPath>$(MSBuildProjectDirectory)\..\third_party\sdk\cuda_13.1.1_extracted\cuda_nvcc\nvcc\bin\nvcc.exe</CudaToolkitNvccPath>
+    <CudaToolkitIncludeDir>$(MSBuildProjectDirectory)\..\third_party\sdk\cuda_13.1.1_extracted\cuda_nvcc\nvcc\include</CudaToolkitIncludeDir>
+    <IncludePath>$(ProjectDir)opencv\x64\include;$(SolutionDir)third_party\external\TensorRT-YOLO\modules\trtyolo;$(SolutionDir)third_party\external\TensorRT-YOLO\modules\trtyolo\infer;$(QcapSdkRoot)\INC;$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cudart\cudart\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_crt\crt\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cccl\thrust\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cccl\thrust\include\cccl;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)opencv\x64\x64\vc17\staticlib;$(QcapSdkRoot)\LIB\X64\VC.MINI;$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\lib;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cudart\cudart\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NOMINMAX;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NOMINMAX;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <CudaCompile>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+      <GenerateRelocatableDeviceCode>false</GenerateRelocatableDeviceCode>
+      <CodeGeneration>compute_86,sm_86</CodeGeneration>
+      <EnableVirtualArchInFatbin>false</EnableVirtualArchInFatbin>
+      <Include>$(ProjectDir);$(ProjectDir)opencv\x64\include;$(SolutionDir)third_party\external\TensorRT-YOLO\modules\trtyolo;$(SolutionDir)third_party\external\TensorRT-YOLO\modules\trtyolo\infer;$(QcapSdkRoot)\INC;$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cudart\cudart\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_crt\crt\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cccl\thrust\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cccl\thrust\include\cccl</Include>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)opencv\x64\include;$(SolutionDir)third_party\external\TensorRT-YOLO\modules\trtyolo;$(SolutionDir)third_party\external\TensorRT-YOLO\modules\trtyolo\infer;$(QcapSdkRoot)\INC;$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cudart\cudart\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_crt\crt\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cccl\thrust\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cccl\thrust\include\cccl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>--std c++17 %(AdditionalOptions)</AdditionalOptions>
+    </CudaCompile>
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NOMINMAX;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)opencv\x64\include;$(SolutionDir)third_party\external\TensorRT-YOLO\modules\trtyolo;$(SolutionDir)third_party\external\TensorRT-YOLO\modules\trtyolo\infer;$(QcapSdkRoot)\INC;$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cudart\cudart\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_crt\crt\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cccl\thrust\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cccl\thrust\include\cccl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libjpeg-turbo.lib;libopenjp2.lib;libpng.lib;opencv_world4110.lib;zlib.lib;QCAP.X64.LIB;nvinfer_10.lib;nvonnxparser_10.lib;nvinfer_plugin_10.lib;cudart.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <DelayLoadDLLs>QCAP.X64.DLL;AMESDK.X64.DLL;%(DelayLoadDLLs)</DelayLoadDLLs>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <CudaCompile>
+      <TargetMachinePlatform>64</TargetMachinePlatform>
+      <GenerateRelocatableDeviceCode>false</GenerateRelocatableDeviceCode>
+      <CodeGeneration>compute_86,sm_86</CodeGeneration>
+      <EnableVirtualArchInFatbin>false</EnableVirtualArchInFatbin>
+      <Include>$(ProjectDir);$(ProjectDir)opencv\x64\include;$(SolutionDir)third_party\external\TensorRT-YOLO\modules\trtyolo;$(SolutionDir)third_party\external\TensorRT-YOLO\modules\trtyolo\infer;$(QcapSdkRoot)\INC;$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cudart\cudart\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_crt\crt\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cccl\thrust\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cccl\thrust\include\cccl</Include>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)opencv\x64\include;$(SolutionDir)third_party\external\TensorRT-YOLO\modules\trtyolo;$(SolutionDir)third_party\external\TensorRT-YOLO\modules\trtyolo\infer;$(QcapSdkRoot)\INC;$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cudart\cudart\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_crt\crt\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cccl\thrust\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cccl\thrust\include\cccl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>--std c++17 %(AdditionalOptions)</AdditionalOptions>
+    </CudaCompile>
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>NOMINMAX;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)opencv\x64\include;$(SolutionDir)third_party\external\TensorRT-YOLO\modules\trtyolo;$(SolutionDir)third_party\external\TensorRT-YOLO\modules\trtyolo\infer;$(QcapSdkRoot)\INC;$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cudart\cudart\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_crt\crt\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cccl\thrust\include;$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cccl\thrust\include\cccl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libjpeg-turbo.lib;libopenjp2.lib;libpng.lib;opencv_world4110.lib;zlib.lib;QCAP.X64.LIB;nvinfer_10.lib;nvonnxparser_10.lib;nvinfer_plugin_10.lib;cudart.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <DelayLoadDLLs>QCAP.X64.DLL;AMESDK.X64.DLL;%(DelayLoadDLLs)</DelayLoadDLLs>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\visual_studio_integration\CUDAVisualStudioIntegration\extras\visual_studio_integration\MSBuildExtensions\CUDA 13.1.targets" Condition="Exists('$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\visual_studio_integration\CUDAVisualStudioIntegration\extras\visual_studio_integration\MSBuildExtensions\CUDA 13.1.targets')" />
+  </ImportGroup>
+  <Target Name="CopyQcapRuntimeToOutput" AfterTargets="Build">
+    <Copy SourceFiles="$(QcapRuntimeRoot)\LIB\X64\VC.MINI\QCAP.X64.DLL" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="Exists('$(QcapRuntimeRoot)\LIB\X64\VC.MINI\QCAP.X64.DLL')" />
+    <Copy SourceFiles="$(AmesdkRuntimeRoot)\LIB\X64\VC.MINI\AMESDK.X64.DLL" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="Exists('$(AmesdkRuntimeRoot)\LIB\X64\VC.MINI\AMESDK.X64.DLL')" />
+    <Copy SourceFiles="$(ProgramFiles(x86))\Multimedia\CODECS\X64\CCUVC.X64.DLL" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="Exists('$(ProgramFiles(x86))\Multimedia\CODECS\X64\CCUVC.X64.DLL')" />
+    <Copy SourceFiles="$(ProgramFiles(x86))\Multimedia\CODECS\X64\CCBOX.X64.DLL" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="Exists('$(ProgramFiles(x86))\Multimedia\CODECS\X64\CCBOX.X64.DLL')" />
+    <Copy SourceFiles="$(ProgramFiles(x86))\Multimedia\CODECS\X64\EYCOPP.X64.DLL" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="Exists('$(ProgramFiles(x86))\Multimedia\CODECS\X64\EYCOPP.X64.DLL')" />
+    <Copy SourceFiles="$(ProgramFiles(x86))\Multimedia\CODECS\X64\AITUVCEXTAPI.X64.DLL" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="Exists('$(ProgramFiles(x86))\Multimedia\CODECS\X64\AITUVCEXTAPI.X64.DLL')" />
+    <Copy SourceFiles="$(ProgramFiles(x86))\Multimedia\CODECS\X64\RTICE_SDK_x64.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="Exists('$(ProgramFiles(x86))\Multimedia\CODECS\X64\RTICE_SDK_x64.dll')" />
+    <Copy SourceFiles="$(ProgramFiles(x86))\Multimedia\CODECS\X64\BOXSDK.X64.DLL" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="Exists('$(ProgramFiles(x86))\Multimedia\CODECS\X64\BOXSDK.X64.DLL')" />
+    <Copy SourceFiles="$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\bin\nvinfer_10.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="Exists('$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\bin\nvinfer_10.dll')" />
+    <Copy SourceFiles="$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\bin\nvinfer_plugin_10.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="Exists('$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\bin\nvinfer_plugin_10.dll')" />
+    <Copy SourceFiles="$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\bin\nvonnxparser_10.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="Exists('$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\bin\nvonnxparser_10.dll')" />
+    <Copy SourceFiles="$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\bin\nvinfer_builder_resource_sm86_10.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="Exists('$(SolutionDir)third_party\sdk\TensorRT-10.15.1.29\bin\nvinfer_builder_resource_sm86_10.dll')" />
+    <Copy SourceFiles="$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cudart\cudart\bin\x64\cudart64_13.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" Condition="Exists('$(SolutionDir)third_party\sdk\cuda_13.1.1_extracted\cuda_cudart\cudart\bin\x64\cudart64_13.dll')" />
+  </Target>
+</Project>
+
+
+

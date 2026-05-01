@@ -1,0 +1,82 @@
+# Build outputs
+x64/
+Debug/
+Release/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.ncb
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+ipch/
+
+# Binary / large files
+*.exe
+*.dll
+*.lib
+*.exp
+*.pdb
+*.ilk
+*.obj
+*.o
+*.log
+*.tlog
+*.iobj
+*.ipdb
+*.engine
+*.onnx
+*.bin
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Cursor IDE
+.cursor/
+
+# Temp
+*.tmp
+*.bak
+~$*
+
+# AmtoOBS build/VS intermediates
+AmtoOBS/x64/
+AmtoOBS/.vs/
+AmtoOBS/packages/
+AmtoOBS/AmtoOBS/x64/
+
+# AmtoOBS non-source directories (SDK, tools, tmp, etc.)
+AmtoOBS/$tmp/
+AmtoOBS/.claude/
+AmtoOBS/.venv-trtyolo/
+AmtoOBS/bench/
+AmtoOBS/progressmd/
+AmtoOBS/qcap_inc/
+AmtoOBS/scripts/
+AmtoOBS/third_party/
+AmtoOBS/TitanTwoBridge/
+AmtoOBS/titan_two/
+AmtoOBS/tmp/
+AmtoOBS/tools/
+AmtoOBS/TT2HidProbe/
+AmtoOBS/_tmp_codecs_7z/
+AmtoOBS/_tmp_codecs_extract/
+AmtoOBS/_tmp_codecs_tar/
+
+# dist runtime binaries (keep config & README only)
+dist/*.exe
+dist/*.dll
+dist/*.engine
+dist/*.bin
+dist/gtuner_cv_workspace/
+
+# model files
+model-/
+
+# aim directory
+aim/
